@@ -36,20 +36,9 @@ export default async function HomePage() {
 
   return (
     <main className="page-shell class-home">
-      <header className="topbar career-header">
-        <div className="container navbar">
-          <div className="brand-row">
-            <button className="menu-btn" aria-label="Menu">
-              <span />
-              <span />
-              <span />
-            </button>
-            <Link href="/" className="brand career-brand">Career Will</Link>
-          </div>
-
-          <div className="logo-mark" aria-label="Career Will logo">
-            <span className="logo-shape" />
-          </div>
+      <header className="edu-header">
+        <div className="edu-header-inner">
+          <h1 className="edu4all-title">Edu4all</h1>
         </div>
       </header>
 
