@@ -1,0 +1,92 @@
+# Education4all
+
+Education4all is a responsive educational video portal built with Next.js. It uses YouTube video embeds and reads lesson data from a Google Sheet, making it easy to manage academic content without a database.
+
+## Features
+
+- Responsive educational landing page
+- YouTube-based video streaming via embedded player
+- Google Sheets as the content management system
+- No login required
+- Separate video detail page
+- Free deployment on Vercel
+
+## Tech stack
+
+- Next.js
+- React
+- Google Sheets API
+- Vercel
+
+## Required Google Sheet columns
+
+Create a Google Sheet with this header row:
+
+| id | title | description | youtube_url | thumbnail_url | subject | grade_level | topic | instructor | duration | language | published | featured | display_order | published_date |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+Example row:
+
+| 1 | Introduction to Algebra | Learn the foundations of algebra. | https://www.youtube.com/watch?v=abc123 | https://img.youtube.com/vi/abc123/hqdefault.jpg | Mathematics | Class 8 | Algebra Basics | Teacher Name | 12:15 | English | TRUE | TRUE | 1 | 2026-01-01 |
+
+Only rows with `published = TRUE` will appear in the app.
+
+## Environment variables
+
+Copy `.env.example` to `.env.local` and fill in your values:
+
+```bash
+cp .env.example .env.local
+```
+
+Then set:
+
+- `GOOGLE_SHEET_ID`
+- `GOOGLE_SHEET_NAME` (default `Videos`)
+- `GOOGLE_SERVICE_ACCOUNT_EMAIL`
+- `GOOGLE_PRIVATE_KEY`
+
+## Google service account setup
+
+1. Create a Google Cloud project.
+2. Enable the Google Sheets API.
+3. Create a service account.
+4. Download the JSON key.
+5. Share your Google Sheet with the service account email.
+6. Add the email and private key to `.env.local`.
+
+## Local development
+
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:3000
+
+## Deployment on Vercel
+
+1. Push this repository to GitHub.
+2. Import it in Vercel.
+3. Add the same environment variables in the Vercel dashboard.
+4. Deploy.
+
+## Notes
+
+- YouTube videos must be public or accessible for embedding.
+- Unlisted videos can be embedded if the app knows the video URL.
+- If the Google credentials are missing, the app falls back to sample content so the project still runs.
+
+## Project structure
+
+```bash
+app/
+  layout.tsx
+  page.tsx
+  not-found.tsx
+  watch/[slug]/page.tsx
+lib/
+  videos.ts
+types/
+  video.ts
+```
