@@ -1,92 +1,388 @@
-# Education4all
+* {
+  box-sizing: border-box;
+}
 
-Education4all is a responsive educational video portal built with Next.js. It uses YouTube video embeds and reads lesson data from a Google Sheet, making it easy to manage academic content without a database.
+:root {
+  --ink: #102a43;
+  --muted: #627d98;
+  --line: #d9e2ec;
+  --surface: #ffffff;
+  --soft: #f0f7ff;
+  --brand: #1769e0;
+  --brand-dark: #0b4fba;
+  --accent: #ffb703;
+}
 
-## Features
+html {
+  scroll-behavior: smooth;
+}
 
-- Responsive educational landing page
-- YouTube-based video streaming via embedded player
-- Google Sheets as the content management system
-- No login required
-- Separate video detail page
-- Free deployment on Vercel
+body {
+  margin: 0;
+  background: #f8fbff;
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-## Tech stack
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-- Next.js
-- React
-- Google Sheets API
-- Vercel
+img {
+  display: block;
+  width: 100%;
+}
 
-## Required Google Sheet columns
+.page-shell {
+  min-height: 100vh;
+}
 
-Create a Google Sheet with this header row:
+.container {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+}
 
-| id | title | description | youtube_url | thumbnail_url | subject | grade_level | topic | instructor | duration | language | published | featured | display_order | published_date |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+}
 
-Example row:
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+}
 
-| 1 | Introduction to Algebra | Learn the foundations of algebra. | https://www.youtube.com/watch?v=abc123 | https://img.youtube.com/vi/abc123/hqdefault.jpg | Mathematics | Class 8 | Algebra Basics | Teacher Name | 12:15 | English | TRUE | TRUE | 1 | 2026-01-01 |
+.brand {
+  color: var(--brand);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
 
-Only rows with `published = TRUE` will appear in the app.
+.nav-links {
+  display: flex;
+  gap: 24px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
 
-## Environment variables
+.nav-links a:hover,
+.back-link-row a:hover {
+  color: var(--brand);
+}
 
-Copy `.env.example` to `.env.local` and fill in your values:
+.hero {
+  background: linear-gradient(135deg, #e8f3ff 0%, #f7fbff 58%, #fff5d6 100%);
+  padding: 92px 0 84px;
+}
 
-```bash
-cp .env.example .env.local
-```
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  align-items: center;
+  gap: 64px;
+}
 
-Then set:
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--brand);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
 
-- `GOOGLE_SHEET_ID`
-- `GOOGLE_SHEET_NAME` (default `Videos`)
-- `GOOGLE_SERVICE_ACCOUNT_EMAIL`
-- `GOOGLE_PRIVATE_KEY`
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
 
-## Google service account setup
+.hero h1 {
+  max-width: 720px;
+  margin-bottom: 20px;
+  font-size: clamp(2.5rem, 7vw, 5.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.07em;
+}
 
-1. Create a Google Cloud project.
-2. Enable the Google Sheets API.
-3. Create a service account.
-4. Download the JSON key.
-5. Share your Google Sheet with the service account email.
-6. Add the email and private key to `.env.local`.
+.hero-copy {
+  max-width: 580px;
+  color: var(--muted);
+  font-size: 1.12rem;
+  line-height: 1.7;
+}
 
-## Local development
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
 
-```bash
-npm install
-npm run dev
-```
+.primary-btn,
+.secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
 
-Open http://localhost:3000
+.primary-btn {
+  background: var(--brand);
+  color: white;
+}
 
-## Deployment on Vercel
+.primary-btn:hover {
+  background: var(--brand-dark);
+  transform: translateY(-2px);
+}
 
-1. Push this repository to GitHub.
-2. Import it in Vercel.
-3. Add the same environment variables in the Vercel dashboard.
-4. Deploy.
+.secondary-btn {
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--ink);
+}
 
-## Notes
+.secondary-btn:hover {
+  transform: translateY(-2px);
+}
 
-- YouTube videos must be public or accessible for embedding.
-- Unlisted videos can be embedded if the app knows the video URL.
-- If the Google credentials are missing, the app falls back to sample content so the project still runs.
+.hero-stats {
+  display: grid;
+  gap: 14px;
+}
 
-## Project structure
+.stat-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+  border: 1px solid rgba(23, 105, 224, 0.14);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 12px 35px rgba(16, 42, 67, 0.06);
+}
 
-```bash
-app/
-  layout.tsx
-  page.tsx
-  not-found.tsx
-  watch/[slug]/page.tsx
-lib/
-  videos.ts
-types/
-  video.ts
-```
+.stat-card strong {
+  font-size: 2rem;
+}
+
+.stat-card span {
+  color: var(--muted);
+}
+
+.section {
+  padding: 82px 0;
+}
+
+.section.muted {
+  background: var(--soft);
+}
+
+.section-heading {
+  margin-bottom: 28px;
+}
+
+.section-heading h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  letter-spacing: -0.05em;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.video-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 8px 25px rgba(16, 42, 67, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(16, 42, 67, 0.1);
+}
+
+.thumb-wrap {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #d9e2ec;
+}
+
+.thumb-wrap img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-body h3 {
+  margin: 10px 0 8px;
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+.card-body p,
+.description {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.tag {
+  display: inline-block;
+  color: var(--brand);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.meta-row span + span::before {
+  content: '•';
+  margin-right: 12px;
+  color: var(--accent);
+}
+
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.subject-card {
+  padding: 25px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: white;
+  font-weight: 700;
+}
+
+.video-page {
+  max-width: 900px;
+}
+
+.video-player-wrap {
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  background: #102a43;
+  box-shadow: 0 16px 40px rgba(16, 42, 67, 0.14);
+}
+
+.video-player-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-info {
+  padding: 32px 0;
+}
+
+.video-info h1 {
+  margin: 10px 0 16px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: -0.06em;
+}
+
+.detail-meta {
+  margin-bottom: 24px;
+}
+
+.meta-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 28px 0;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.meta-list div {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.back-link-row {
+  margin-top: 26px;
+}
+
+.empty-state {
+  padding: 120px 0;
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .video-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .subject-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .container {
+    width: min(100% - 28px, 1120px);
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero {
+    padding: 64px 0;
+  }
+
+  .section {
+    padding: 60px 0;
+  }
+
+  .video-grid,
+  .subject-grid,
+  .meta-list {
+    grid-template-columns: 1fr;
+  }
+}
