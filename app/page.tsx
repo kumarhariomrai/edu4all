@@ -42,24 +42,21 @@ export default async function HomePage() {
         </div>
       </header>
 
-      <section className="class-toolbar">
-        <div className="container toolbar-row">
-          <div className="search-box">
-            <span className="search-icon">⌕</span>
-            <span>Search Here...</span>
-          </div>
-          <button className="favourite-btn">My Favourite</button>
-        </div>
-      </section>
-
       <section id="classes" className="class-section">
         <div className="container class-list">
           {classGroups.map(({ className, videos: classVideos }, index) => (
-            <Link href={`/class/${encodeURIComponent(className)}`} className={`class-card ${CLASS_COLORS[index]}`} key={className}>
+            <Link
+              href={`/class/${encodeURIComponent(className)}`}
+              className={`class-card ${CLASS_COLORS[index]}`}
+              key={className}
+            >
               <div className="class-folder"><FolderIcon /></div>
               <div className="class-card-content">
                 <h3>{className}</h3>
-                <p><span className="book-icon" aria-hidden="true">▣</span>{classVideos.length} {classVideos.length === 1 ? 'Course' : 'Courses'}</p>
+                <p>
+                  <span className="book-icon" aria-hidden="true">▣</span>
+                  {classVideos.length} {classVideos.length === 1 ? 'Course' : 'Courses'}
+                </p>
               </div>
               <span className="class-arrow"><ArrowIcon /></span>
             </Link>
