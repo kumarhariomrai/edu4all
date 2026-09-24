@@ -4,10 +4,12 @@ import { getAllVideos } from '@/lib/videos';
 const CLASS_LEVELS = ['Class IX', 'Class X', 'Class XI', 'Class XII'];
 const CLASS_COLORS = ['purple', 'teal', 'pink', 'orange'];
 
-function groupVideosByClass(videos: typeof import('@/lib/videos').Video[]) {
+function groupVideosByClass(videos: Array<{ grade_level: string }>) {
   return CLASS_LEVELS.map((className) => ({
     className,
-    videos: videos.filter((video) => video.grade_level.trim().toLowerCase() === className.toLowerCase()),
+    videos: videos.filter(
+      (video) => video.grade_level.trim().toLowerCase() === className.toLowerCase()
+    ),
   }));
 }
 
