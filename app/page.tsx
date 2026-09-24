@@ -1,11 +1,10 @@
 import Link from 'next/link';
 import { getAllVideos } from '@/lib/videos';
-import type { Video } from '@/types/video';
 
-const CLASS_LEVELS = ['Class V', 'Class VI', 'Class VII', 'Class VIII', 'Class IX', 'Class X'];
-const CLASS_COLORS = ['purple', 'teal', 'pink', 'orange', 'blue', 'green'];
+const CLASS_LEVELS = ['Class IX', 'Class X', 'Class XI', 'Class XII'];
+const CLASS_COLORS = ['purple', 'teal', 'pink', 'orange'];
 
-function groupVideosByClass(videos: Video[]) {
+function groupVideosByClass(videos: typeof import('@/lib/videos').Video[]) {
   return CLASS_LEVELS.map((className) => ({
     className,
     videos: videos.filter((video) => video.grade_level.trim().toLowerCase() === className.toLowerCase()),
@@ -35,78 +34,44 @@ export default async function HomePage() {
 
   return (
     <main className="page-shell class-home">
-      <header className="topbar">
+      <header className="topbar career-header">
         <div className="container navbar">
-          <Link href="/" className="brand">Education4all</Link>
-          <nav className="nav-links">
-            <Link href="#classes">Classes</Link>
-            <Link href="#library">All videos</Link>
-          </nav>
+          <div className="brand-row">
+            <button className="menu-btn" aria-label="Menu">
+              <span />
+              <span />
+              <span />
+            </button>
+            <Link href="/" className="brand career-brand">Career Will</Link>
+          </div>
+
+          <div className="logo-mark" aria-label="Career Will logo">
+            <span className="logo-shape" />
+          </div>
         </div>
       </header>
 
-      <section className="class-hero">
-        <div className="container">
-          <p className="eyebrow">Learn at your level</p>
-          <h1>Choose your class</h1>
-          <p className="hero-copy">Find academic lessons organized for Classes V to X.</p>
+      <section className="class-toolbar">
+        <div className="container toolbar-row">
+          <div className="search-box">
+            <span className="search-icon">⌕</span>
+            <span>Search Here...</span>
+          </div>
+          <button className="favourite-btn">My Favourite</button>
         </div>
       </section>
 
       <section id="classes" className="class-section">
-        <div className="container">
-          <div className="section-heading class-heading">
-            <p className="eyebrow">Education4all library</p>
-            <h2>Explore by class</h2>
-          </div>
-
-          <div className="class-list">
-            {classGroups.map(({ className, videos: classVideos }, index) => (
-              <a href={`#${className.toLowerCase().replace(' ', '-')}`} className={`class-card ${CLASS_COLORS[index]}`} key={className}>
-                <div className="class-folder"><FolderIcon /></div>
-                <div className="class-card-content">
-                  <h3>{className}</h3>
-                  <p><span className="book-icon" aria-hidden="true">▮▮</span>{classVideos.length} {classVideos.length === 1 ? 'Course' : 'Courses'}</p>
-                </div>
-                <span className="class-arrow"><ArrowIcon /></span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="library" className="class-library">
-        <div className="container">
-          {classGroups.map(({ className, videos: classVideos }) => (
-            <section id={className.toLowerCase().replace(' ', '-')} className="class-course-section" key={className}>
-              <div className="section-heading class-heading-row">
-                <div>
-                  <p className="eyebrow">{className}</p>
-                  <h2>{classVideos.length ? 'Course videos' : 'Coming soon'}</h2>
-                </div>
-                <span className="course-count">{classVideos.length} {classVideos.length === 1 ? 'course' : 'courses'}</span>
+        <div className="container class-list">
+          {classGroups.map(({ className, videos: classVideos }, index) => (
+            <Link href={`/class/${encodeURIComponent(className)}`} className={`class-card ${CLASS_COLORS[index]}`} key={className}>
+              <div className="class-folder"><FolderIcon /></div>
+              <div className="class-card-content">
+                <h3>{className}</h3>
+                <p><span className="book-icon" aria-hidden="true">▣</span>{classVideos.length} {classVideos.length === 1 ? 'Course' : 'Courses'}</p>
               </div>
-
-              {classVideos.length > 0 ? (
-                <div className="video-grid">
-                  {classVideos.map((video) => (
-                    <Link href={`/watch/${video.slug}`} key={video.id} className="video-card">
-                      <div className="thumb-wrap">
-                        <img src={video.thumbnail_url || `https://img.youtube.com/vi/${video.youtube_id}/hqdefault.jpg`} alt={video.title} />
-                      </div>
-                      <div className="card-body">
-                        <span className="tag">{video.subject}</span>
-                        <h3>{video.title}</h3>
-                        <p>{video.description}</p>
-                        <div className="meta-row"><span>{video.topic}</span><span>{video.duration}</span></div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <div className="empty-class">New lessons for {className} will be added soon.</div>
-              )}
-            </section>
+              <span className="class-arrow"><ArrowIcon /></span>
+            </Link>
           ))}
         </div>
       </section>
